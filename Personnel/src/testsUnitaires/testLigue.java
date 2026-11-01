@@ -86,12 +86,49 @@ class testLigue
 		Ligue ligue2 = gestionPersonnel.addLigue(nomUnique("Handball"));
 		Employe employeAutreLigue = ligue2.addEmploye("Moreau", "Jean", "j.moreau@mail.fr", "pw");
 		assertThrows(DroitsInsuffisants.class, () -> ligue1.setAdministrateur(employeAutreLigue));
-		@Test
-	void setAdministrateurAutreLigue() throws SauvegardeImpossible
+	}
+    @Test
+	void setAdministrateurNull() throws SauvegardeImpossible
 	{
-		Ligue ligue1 = gestionPersonnel.addLigue(nomUnique("Golf"));
-		Ligue ligue2 = gestionPersonnel.addLigue(nomUnique("Handball"));
-		Employe employeAutreLigue = ligue2.addEmploye("Moreau", "Jean", "j.moreau@mail.fr", "pw");
-		assertThrows(DroitsInsuffisants.class, () -> ligue1.setAdministrateur(employeAutreLigue));
+		Ligue ligue = gestionPersonnel.addLigue(nomUnique("Cyclisme"));
+		assertThrows(DroitsInsuffisants.class, () -> ligue.setAdministrateur(null));
+		assertSame(gestionPersonnel.getRoot(), ligue.getAdministrateur());
+	}
+	
+	
+	@Test
+	void removeLigue() throws SauvegardeImpossible
+	{
+		Ligue ligue = gestionPersonnel.addLigue(nomUnique("Boxe"));
+		assertTrue(ligueEstPresente(ligue));
+		ligue.remove();
+		assertFalse(ligueEstPresente(ligue));
+	}
+	
+
+	@Test
+	void removeLigueSupprimeSesEmployes() throws SauvegardeImpossible
+	{
+		Ligue ligue = gestionPersonnel.addLigue(nomUnique("Badminton"));
+		ligue.addEmploye("Roux", "Marie", "m.roux@mail.fr", "pw");
+		ligue.addEmploye("Fournier", "Hugo", "h.fournier@mail.fr", "pw");
+		ligue.remove();
+		assertFalse(ligueEstPresente(ligue));
+		assertTrue(ligue.getEmployes().isEmpty());
+	}
+	
+
+	@Test
+	void setNomPuisRemoveLigue() throws SauvegardeImpossible
+	{
+		String suffixe = "-" + System.nanoTime();
+		Ligue premiere = gestionPersonnel.addLigue("0Aaa" + suffixe);
+		gestionPersonnel.addLigue("0Bbb" + suffixe);
+		gestionPersonnel.addLigue("0Ccc" + suffixe);
+		premiere.setNom("zzz" + suffixe);
+		premiere.remove();
+		assertFalse(ligueEstPresente(premiere));
 	}
 }
+ 
+
