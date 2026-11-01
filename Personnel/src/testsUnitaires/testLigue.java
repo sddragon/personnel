@@ -40,4 +40,22 @@ class testLigue
 		assertEquals(nouveauNom, ligue.getNom());
 		assertEquals(nouveauNom, ligue.toString());
 	}
+	@Test
+	void administrateurParDefaut() throws SauvegardeImpossible
+	{
+		Ligue ligue = gestionPersonnel.addLigue(nomUnique("Escrime"));
+		assertSame(gestionPersonnel.getRoot(), ligue.getAdministrateur());
+	}
+	
+	@Test
+	void setAdministrateurEmployeDeLaLigue() throws SauvegardeImpossible
+	{
+		Ligue ligue = gestionPersonnel.addLigue(nomUnique("Tennis"));
+		Employe employe = ligue.addEmploye("Martin", "Alice", "a.martin@mail.fr", "pw");
+		ligue.setAdministrateur(employe);
+		assertSame(employe, ligue.getAdministrateur());
+		assertTrue(employe.estAdmin(ligue));
+		assertFalse(gestionPersonnel.getRoot().estAdmin(ligue));
+	}
+	
 }
