@@ -79,5 +79,19 @@ class testLigue
 		assertTrue(b.estAdmin(ligue));
 		assertSame(b, ligue.getAdministrateur());
 	}
-	
+	@Test
+	void setAdministrateurAutreLigue() throws SauvegardeImpossible
+	{
+		Ligue ligue1 = gestionPersonnel.addLigue(nomUnique("Golf"));
+		Ligue ligue2 = gestionPersonnel.addLigue(nomUnique("Handball"));
+		Employe employeAutreLigue = ligue2.addEmploye("Moreau", "Jean", "j.moreau@mail.fr", "pw");
+		assertThrows(DroitsInsuffisants.class, () -> ligue1.setAdministrateur(employeAutreLigue));
+		@Test
+	void setAdministrateurAutreLigue() throws SauvegardeImpossible
+	{
+		Ligue ligue1 = gestionPersonnel.addLigue(nomUnique("Golf"));
+		Ligue ligue2 = gestionPersonnel.addLigue(nomUnique("Handball"));
+		Employe employeAutreLigue = ligue2.addEmploye("Moreau", "Jean", "j.moreau@mail.fr", "pw");
+		assertThrows(DroitsInsuffisants.class, () -> ligue1.setAdministrateur(employeAutreLigue));
+	}
 }
