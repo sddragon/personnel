@@ -31,4 +31,13 @@ class testLigue
 	{
 		return gestionPersonnel.getLigues().stream().anyMatch(l -> l == ligue);
 	}
+	@Test
+	void setNomLigue() throws SauvegardeImpossible
+	{
+		Ligue ligue = gestionPersonnel.addLigue(nomUnique("Judo"));
+		String nouveauNom = nomUnique("Karaté");
+		ligue.setNom(nouveauNom);
+		assertEquals(nouveauNom, ligue.getNom());
+		assertEquals(nouveauNom, ligue.toString());
+	}
 }
