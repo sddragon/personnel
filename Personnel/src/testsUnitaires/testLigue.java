@@ -57,5 +57,27 @@ class testLigue
 		assertTrue(employe.estAdmin(ligue));
 		assertFalse(gestionPersonnel.getRoot().estAdmin(ligue));
 	}
+	@Test
+	void setAdministrateurRoot() throws SauvegardeImpossible
+	{
+		Ligue ligue = gestionPersonnel.addLigue(nomUnique("Natation"));
+		Employe employe = ligue.addEmploye("Petit", "Luc", "l.petit@mail.fr", "pw");
+		ligue.setAdministrateur(employe);
+		ligue.setAdministrateur(gestionPersonnel.getRoot());
+		assertTrue(gestionPersonnel.getRoot().estAdmin(ligue));
+		assertFalse(employe.estAdmin(ligue));
+	}
+	@Test
+	void changerAdministrateurRevoqueAncien() throws SauvegardeImpossible
+	{
+		Ligue ligue = gestionPersonnel.addLigue(nomUnique("Rugby"));
+		Employe a = ligue.addEmploye("Bernard", "Anna", "a.bernard@mail.fr", "pw");
+		Employe b = ligue.addEmploye("Dubois", "Paul", "p.dubois@mail.fr", "pw");
+		ligue.setAdministrateur(a);
+		ligue.setAdministrateur(b);
+		assertFalse(a.estAdmin(ligue));
+		assertTrue(b.estAdmin(ligue));
+		assertSame(b, ligue.getAdministrateur());
+	}
 	
 }
